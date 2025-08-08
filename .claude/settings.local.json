@@ -12,7 +12,9 @@
       "Bash(npm config set:*)",
       "Bash(npm view:*)",
       "Bash(npm login)",
-      "Bash(npm publish:*)"
+      "Bash(npm publish:*)",
+      "Bash(node:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

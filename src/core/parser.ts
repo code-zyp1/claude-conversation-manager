@@ -210,7 +210,13 @@ export class ConversationParser {
    * Generate automatic summary from messages (mimics Claude Code behavior)
    */
   private static generateAutoSummary(messages: ConversationMessage[]): string {
-    // Find first user message with substantial content
+    if (!messages || messages.length === 0) {
+      return 'Empty conversation'
+    }
+
+    // Try different strategies to extract meaningful content
+    
+    // Strategy 1: Find first user message with substantial content (new array format)
     const firstUserMessage = messages.find(m => 
       m.type === 'user' && 
       m.message?.content && 
@@ -220,27 +226,83 @@ export class ConversationParser {
     
     if (firstUserMessage && Array.isArray(firstUserMessage.message.content)) {
       const textContent = firstUserMessage.message.content
-        .filter(c => c.type === 'text')
+        .filter(c => c && c.type === 'text' && c.text)
         .map(c => c.text)
         .join(' ')
       
-      // Truncate and clean up text like Claude Code does
       const cleaned = textContent.trim().replace(/\s+/g, ' ')
-      if (cleaned.length > 80) {
-        return cleaned.substring(0, 77) + '...'
+      if (cleaned.length > 10) { // At least some meaningful content
+        return cleaned.length > 80 ? cleaned.substring(0, 77) + '...' : cleaned
       }
-      return cleaned
     }
     
-    // Fallback for other message formats
-    if (firstUserMessage) {
-      const content = firstUserMessage.message?.content
-      if (typeof content === 'string') {
+    // Strategy 2: Find any user message with string content (legacy format)
+    const stringUserMessage = messages.find(m => 
+      m.type === 'user' && 
+      m.message?.content && 
+      typeof m.message.content === 'string'
+    )
+    
+    if (stringUserMessage && typeof stringUserMessage.message.content === 'string') {
+      const content = stringUserMessage.message.content.trim()
+      if (content.length > 10) {
         return content.length > 80 ? content.substring(0, 77) + '...' : content
       }
     }
     
-    return 'No summary available'
+    // Strategy 3: Look for any meaningful text in any message type
+    for (const message of messages) {
+      if (message.message?.content) {
+        let text = ''
+        
+        if (typeof message.message.content === 'string') {
+          text = message.message.content
+        } else if (Array.isArray(message.message.content)) {
+          text = message.message.content
+            .filter(c => c && c.type === 'text' && c.text)
+            .map(c => c.text)
+            .join(' ')
+        }
+        
+        const cleaned = text.trim().replace(/\s+/g, ' ')
+        if (cleaned.length > 10) {
+          // Skip common system messages
+          if (!cleaned.toLowerCase().includes('api error') && 
+              !cleaned.toLowerCase().includes('command-message') &&
+              !cleaned.toLowerCase().includes('claude ai usage limit')) {
+            return cleaned.length > 80 ? cleaned.substring(0, 77) + '...' : cleaned
+          }
+        }
+      }
+    }
+    
+    // Strategy 4: Check if it's a conversation continuation file
+    const hasContextContinuation = messages.some(m => 
+      m.message && typeof m.message === 'object' && 
+      JSON.stringify(m.message).includes('context')
+    )
+    
+    if (hasContextContinuation) {
+      return '[Conversation continuation]'
+    }
+    
+    // Strategy 5: Check if it has only system/error messages
+    const hasOnlySystemMessages = messages.every(m => 
+      !m.type || 
+      m.type !== 'user' || 
+      !m.message?.content ||
+      (typeof m.message.content === 'string' && 
+       (m.message.content.includes('API Error') || 
+        m.message.content.includes('usage limit') ||
+        m.message.content.length < 10))
+    )
+    
+    if (hasOnlySystemMessages && messages.length > 0) {
+      return '[System messages only]'
+    }
+    
+    // Fallback
+    return messages.length === 0 ? 'Empty conversation' : 'No meaningful content found'
   }
 
   /**
