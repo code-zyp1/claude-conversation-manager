@@ -13,19 +13,26 @@ Simple & lightweight conversation cleaner for Claude Code / 简单轻量的 Clau
 
 ## 🚀 Quick Start / 快速开始
 
-### Install Dependencies / 安装依赖
+### Option 1: Install from npm (Recommended) / 选项1：从npm安装（推荐）
 ```bash
-cd claude-conversation-manager
-npm install
+# Install globally / 全局安装
+npm install -g claude-conversation-manager
+
+# Use the CLI tool / 使用CLI工具
+ccm
+# or / 或者
+ccm interactive
 ```
 
-### Launch Interactive Mode / 启动交互界面
+### Option 2: Development Setup / 选项2：开发环境设置
 ```bash
+# Clone and install dependencies / 克隆并安装依赖
+git clone https://github.com/code-zyp1/claude-conversation-manager.git
+cd claude-conversation-manager
+npm install
+
+# Launch Interactive Mode / 启动交互界面
 npm run dev
-```
-or / 或者
-```bash
-npm run clean
 ```
 
 ## 📋 Features / 功能说明
@@ -144,6 +151,26 @@ CCM 使用全面的备份系统确保数据安全：
 ## 🔧 Advanced Usage / 高级用法
 
 ### Command Line Interface / 命令行界面
+
+**If installed via npm / 如果通过npm安装：**
+```bash
+# View all commands / 查看所有命令
+ccm --help
+
+# List conversations directly / 直接列出对话
+ccm list
+
+# Delete corrupted conversations / 删除损坏对话
+ccm delete --corrupted
+
+# Health check / 健康检查
+ccm health --fix
+
+# Interactive mode / 交互模式
+ccm interactive
+```
+
+**If running from source / 如果从源码运行：**
 ```bash
 # View all commands / 查看所有命令
 npx ts-node src/cli.ts --help
@@ -156,16 +183,6 @@ npx ts-node src/cli.ts delete --corrupted
 
 # Health check / 健康检查
 npx ts-node src/cli.ts health --fix
-
-# Create backup / 创建备份
-npx ts-node src/cli.ts interactive
-```
-
-### Build and Install Globally / 构建并全局安装
-```bash
-npm run build
-npm link  # Global installation
-ccm       # Run from anywhere
 ```
 
 ## 🛡️ Safety & Security / 安全性
