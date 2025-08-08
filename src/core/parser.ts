@@ -116,16 +116,17 @@ export class ConversationParser {
     isCorrupted: boolean
     reason?: string
   } {
-    // Check for extremely large files (>5MB)
-    if (fileSize > 5 * 1024 * 1024) {
-      return { isCorrupted: true, reason: 'File too large (>5MB)' }
+    // Check for extremely large files (>10MB) - increased threshold for valid conversation chains
+    if (fileSize > 10 * 1024 * 1024) {
+      return { isCorrupted: true, reason: 'File too large (>10MB)' }
     }
 
-    // Check for extremely large single messages (>50KB)
+    // Check for extremely large single messages (>100KB) - increased threshold for context continuation
     for (const message of messages) {
       const messageSize = JSON.stringify(message).length
-      if (messageSize > 50 * 1024) {
-        return { isCorrupted: true, reason: 'Contains oversized message (>50KB)' }
+      // Context continuation messages can be larger, so only flag truly excessive sizes
+      if (messageSize > 100 * 1024) {
+        return { isCorrupted: true, reason: 'Contains oversized message (>100KB)' }
       }
     }
 
@@ -134,16 +135,30 @@ export class ConversationParser {
       return { isCorrupted: true, reason: 'No valid messages found' }
     }
 
-    // Check for invalid timestamps
+    // More lenient timestamp validation - Claude Code creates valid files with various timestamp formats
     const invalidTimestamps = messages.filter(m => !m.timestamp || isNaN(new Date(m.timestamp).getTime()))
-    if (invalidTimestamps.length > messages.length * 0.5) {
+    if (invalidTimestamps.length > messages.length * 0.8) { // Changed from 0.5 to 0.8
       return { isCorrupted: true, reason: 'Too many invalid timestamps' }
     }
 
-    // Check for missing UUIDs
+    // More lenient UUID validation - some continuation files may not have UUIDs for all messages
     const missingUuids = messages.filter(m => !m.uuid)
-    if (missingUuids.length > 0) {
-      return { isCorrupted: true, reason: 'Missing message UUIDs' }
+    if (missingUuids.length === messages.length) { // Only flag if ALL messages are missing UUIDs
+      return { isCorrupted: true, reason: 'All messages missing UUIDs' }
+    }
+
+    // Additional check: Validate JSON structure integrity
+    try {
+      for (const message of messages) {
+        if (!message.type || (message.type !== 'user' && message.type !== 'assistant')) {
+          // Allow other message types that might be valid in conversation chains
+          if (!message.type || typeof message.type !== 'string') {
+            return { isCorrupted: true, reason: 'Invalid message type structure' }
+          }
+        }
+      }
+    } catch (error) {
+      return { isCorrupted: true, reason: 'JSON structure validation failed' }
     }
 
     return { isCorrupted: false }

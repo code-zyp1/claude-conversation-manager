@@ -66,6 +66,33 @@ export class ConversationManager {
   }
 
   /**
+   * List conversations with grouping by project and summary
+   * This helps identify multiple files that belong to the same conversation
+   */
+  async listConversationsGrouped(): Promise<{ [key: string]: ConversationMetadata[] }> {
+    const conversations = await this.listConversations()
+    const grouped: { [key: string]: ConversationMetadata[] } = {}
+    
+    for (const conv of conversations) {
+      // Create a unique key based on project path and summary
+      const key = `${conv.workingDirectory}|||${conv.summary}`
+      
+      if (!grouped[key]) {
+        grouped[key] = []
+      }
+      
+      grouped[key].push(conv)
+    }
+    
+    // Sort each group by creation date
+    for (const key of Object.keys(grouped)) {
+      grouped[key].sort((a, b) => a.created.getTime() - b.created.getTime())
+    }
+    
+    return grouped
+  }
+
+  /**
    * Search conversations by criteria
    */
   async searchConversations(options: SearchOptions): Promise<ConversationMetadata[]> {
