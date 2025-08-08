@@ -1,6 +1,6 @@
 {
   "name": "claude-conversation-manager",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A CLI tool for managing Claude Code conversation history with parsing and i18n support",
   "main": "dist/index.js",
   "bin": {
@@ -20,7 +20,7 @@
     "test": "jest",
     "type-check": "tsc --noEmit"
   },
-  "keywords": ["claude-code", "conversation", "manager", "cli", "typescript", "i18n", "parser"],
+  "keywords": ["claude-code", "claude", "conversation", "manager", "cli", "cleanup", "debug", "scroll", "fix", "anthropic", "ai", "chat", "history", "typescript", "i18n", "parser", "jsonl", "backup", "repair"],
   "author": "Claude Code User",
   "license": "MIT",
   "repository": {

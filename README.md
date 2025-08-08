@@ -1,261 +1,285 @@
-# 🧹 Claude Conversation Manager (CCM)
+# Claude Conversation Manager
 
-Simple & lightweight conversation cleaner for Claude Code / 简单轻量的 Claude Code 对话清理工具
+> [中文版本](#中文版本) | [English Version](#english-version)
 
-## ✨ Features / 特点
+A professional CLI tool for managing Claude Code conversation history with advanced parsing and internationalization support.
 
-- **🚀 Simple to use**: Run `npm run dev` to enter interactive mode / 运行 `npm run dev` 直接进入交互界面
-- **🛡️ Safe cleanup**: Automatic backup before deletion / 删除前自动创建备份  
-- **🔍 Smart detection**: Auto-detect corrupted conversation files / 自动检测损坏的对话文件
-- **📊 Claude -r style**: Familiar display format / 熟悉的显示格式
-- **⚡ Lightweight**: Focus on core cleanup, avoid complexity / 专注核心清理功能，避免复杂化
-- **🌐 Multi-language**: English & Chinese support / 支持中英文界面
+## English Version
 
-## 🚀 Quick Start / 快速开始
+### Overview
 
-### Option 1: Install from npm (Recommended) / 选项1：从npm安装（推荐）
+Claude Conversation Manager (CCM) is a command-line utility designed to help developers manage, clean, and optimize their Claude Code conversation history. It addresses common issues such as scroll lag, corrupted conversation files, and storage optimization.
+
+### Key Features
+
+- **Conversation Management**: List, analyze, and manage Claude Code conversations
+- **Corruption Detection**: Automatically detect and repair corrupted conversation files
+- **Safe Cleanup**: Remove problematic conversations with automatic backup
+- **Storage Optimization**: Analyze and optimize conversation storage usage
+- **Health Monitoring**: Comprehensive conversation health checks and repairs
+- **Backup System**: Automatic and manual backup creation with restore capabilities
+- **Multi-language Support**: English and Chinese interface support
+- **TypeScript**: Full TypeScript support with type definitions
+
+### Installation
+
+#### NPM Installation (Recommended)
+
 ```bash
-# Install globally / 全局安装
+# Install globally
 npm install -g claude-conversation-manager
 
-# Use the CLI tool / 使用CLI工具
+# Run the tool
 ccm
-# or / 或者
+# or
 ccm interactive
 ```
 
-### Option 2: Development Setup / 选项2：开发环境设置
+#### Development Setup
+
 ```bash
-# Clone and install dependencies / 克隆并安装依赖
 git clone https://github.com/code-zyp1/claude-conversation-manager.git
 cd claude-conversation-manager
 npm install
-
-# Launch Interactive Mode / 启动交互界面
 npm run dev
 ```
 
-## 📋 Features / 功能说明
+### Usage
 
-### 📋 List All Conversations / 查看所有对话
-- Browse all your Claude Code conversations / 浏览所有对话记录
-- Show project path, creation date, message count / 显示项目路径、创建日期、消息数量
-- Highlight corrupted conversations in red / 用红色标记损坏的对话
+#### Interactive Mode
 
-### 🗑️ Delete Conversation / 删除对话
-- Select and delete individual conversations / 选择并删除单个对话
-- Safe interactive selection / 安全的交互式选择
-- Automatic backup before deletion / 删除前自动备份
-
-### ❌ Delete Corrupted Conversations / 删除损坏对话 (推荐优先使用)
-- **Most useful feature for fixing Claude Code scroll issues** / **修复Claude Code滚动问题的最有用功能**
-- One-click cleanup of all corrupted conversations / 一键清理所有损坏对话
-- Shows corruption reason for each file / 显示每个文件的损坏原因
-- Automatic backup before batch deletion / 批量删除前自动备份
-
-### 📊 View Statistics / 查看统计信息
-- Total conversations and storage usage / 对话总数和存储使用情况
-- Number of projects and corrupted files / 项目数量和损坏文件数
-- Largest conversation file identification / 识别最大的对话文件
-
-### 🏥 Health Check & Repair / 健康检查和修复
-- Scan all conversations for corruption / 扫描所有对话是否损坏
-- Attempt automatic repair of corrupted files / 尝试自动修复损坏文件
-- Generate comprehensive health report / 生成综合健康报告
-
-### 💾 Create Backup / 创建备份
-- Manual backup creation / 手动创建备份
-- Backup location and restore instructions / 备份位置和恢复说明
-
-### 🌐 Language/语言
-- Switch between English and Chinese / 中英文界面切换
-- Auto-detect system language / 自动检测系统语言
-
-## 💾 Backup System / 备份系统详解
-
-### How Backup Works / 备份工作原理
-
-CCM uses a comprehensive backup system to ensure your data safety:
-CCM 使用全面的备份系统确保数据安全：
-
-1. **Automatic Backups / 自动备份**
-   - Created before every delete operation / 每次删除操作前自动创建
-   - Stored in `backups/` folder inside the tool directory / 存储在工具目录的 `backups/` 文件夹中
-   - Filename format: `backup-YYYY-MM-DD-HH-mm-ss.tar.gz` / 文件名格式
-
-2. **Manual Backups / 手动备份**
-   - Use "💾 Create backup" option in interactive menu / 使用交互菜单中的"💾 创建备份"选项
-   - Backs up entire conversation directory / 备份整个对话目录
-   - Includes metadata and conversation files / 包含元数据和对话文件
-
-3. **Backup Contents / 备份内容**
-   - All `.jsonl` conversation files / 所有 `.jsonl` 对话文件
-   - Directory structure preserved / 保持目录结构
-   - Project organization maintained / 维持项目组织结构
-
-### How to Restore from Backup / 如何从备份恢复
-
-1. **Locate backup file / 找到备份文件**
-   ```bash
-   ls claude-conversation-manager/backups/
-   ```
-
-2. **Manual restore / 手动恢复**
-   ```bash
-   # Extract backup to temporary location
-   tar -xzf backup-2025-01-08-14-30-25.tar.gz -C /tmp/restore
-   
-   # Copy files back to Claude directory
-   cp -r /tmp/restore/* ~/.claude/projects/
-   ```
-
-3. **Verify restoration / 验证恢复**
-   - Run CCM and check conversation list / 运行 CCM 并检查对话列表
-   - Use health check to verify file integrity / 使用健康检查验证文件完整性
-
-### Backup Location / 备份位置
-- **Tool backups**: `claude-conversation-manager/backups/` / 工具备份
-- **Size**: Backups are compressed, typically 10-50% of original size / 备份已压缩，通常为原始大小的10-50%
-- **Retention**: Keep important backups permanently, others can be deleted after verification / 重要备份永久保存，其他可在验证后删除
-
-## 🎯 Problem Solving / 解决的问题
-
-### Primary Issue / 主要问题
-**Claude Code conversation scroll bug** - Can't scroll up to view conversation history
-**Claude Code对话滚动错误** - 无法向上滚动查看对话历史记录
-
-**Root Cause / 根本原因**: Oversized context continuation messages (>50KB) cause TUI rendering issues
-**根本原因**: 超大的上下文延续消息（>50KB）导致TUI渲染问题
-
-**Solution / 解决方案**: Use "❌ Delete corrupted conversations" to remove problematic files
-**解决方案**: 使用"❌ 删除损坏对话"移除有问题的文件
-
-### Other Issues / 其他问题
-- Large conversation files consuming storage / 大型对话文件消耗存储空间
-- Corrupted conversation data / 损坏的对话数据
-- Difficulty managing conversation history / 难以管理对话历史记录
-
-## 📁 File Locations / 文件位置
-
-### Claude Code Storage / Claude Code 存储位置
-- **Windows**: `C:\Users\[username]\.claude\projects\`
-- **macOS/Linux**: `~/.claude/projects/`
-- **File format**: `.jsonl` (JSON Lines)
-- **Structure**: Each project has encoded directory name / 每个项目都有编码的目录名
-
-### Project Directory Encoding / 项目目录编码
-- Path encoding: `C:\Users\user\project` → `C--Users-user-project`
-- Each conversation: `[uuid].jsonl`
-- Contains message history and metadata / 包含消息历史和元数据
-
-## 🔧 Advanced Usage / 高级用法
-
-### Command Line Interface / 命令行界面
-
-**If installed via npm / 如果通过npm安装：**
 ```bash
-# View all commands / 查看所有命令
-ccm --help
-
-# List conversations directly / 直接列出对话
-ccm list
-
-# Delete corrupted conversations / 删除损坏对话
-ccm delete --corrupted
-
-# Health check / 健康检查
-ccm health --fix
-
-# Interactive mode / 交互模式
 ccm interactive
 ```
 
-**If running from source / 如果从源码运行：**
+Provides a full interactive interface with menu-driven options for all operations.
+
+#### Command Line Interface
+
 ```bash
-# View all commands / 查看所有命令
-npx ts-node src/cli.ts --help
+# View all available commands
+ccm --help
 
-# List conversations directly / 直接列出对话
-npx ts-node src/cli.ts list
+# List all conversations
+ccm list
 
-# Delete corrupted conversations / 删除损坏对话
-npx ts-node src/cli.ts delete --corrupted
+# Delete corrupted conversations
+ccm delete --corrupted
 
-# Health check / 健康检查
-npx ts-node src/cli.ts health --fix
+# Run health check with automatic repair
+ccm health --fix
+
+# Create manual backup
+ccm backup
 ```
 
-## 🛡️ Safety & Security / 安全性
+### Core Functions
 
-### Data Protection / 数据保护
-- **Automatic backups** before any destructive operation / 任何破坏性操作前自动备份
-- **No system modification** - only operates on conversation files / 不修改系统 - 仅操作对话文件
-- **Read-only analysis** for corruption detection / 损坏检测的只读分析
-- **Confirmation prompts** prevent accidental deletion / 确认提示防止意外删除
+#### 1. List Conversations
+Browse all Claude Code conversations with detailed information including project path, creation date, and message count. Corrupted conversations are clearly highlighted.
 
-### Best Practices / 最佳实践
-- **Close Claude Code** before running CCM / 运行CCM前关闭Claude Code
-- **Create manual backup** before major cleanup / 大规模清理前创建手动备份
-- **Test with small operations** first / 先测试小操作
-- **Keep important conversations** backed up separately / 重要对话单独备份
+#### 2. Delete Corrupted Conversations
+**Primary use case**: Fix Claude Code scroll issues by removing oversized context continuation messages (>50KB) that cause TUI rendering problems.
 
-## 💡 Usage Recommendations / 使用建议
+#### 3. Health Check & Repair
+Comprehensive scan of all conversation files with automatic repair attempts for recoverable corruption.
 
-### Regular Maintenance / 定期维护
-1. **Weekly health check** / 每周健康检查
-   - Run "🏥 Health check & repair"
-   - Address any corrupted files immediately / 立即处理任何损坏文件
+#### 4. Statistics & Analysis
+- Total conversation count and storage usage
+- Project distribution and largest files identification
+- Performance impact analysis
 
-2. **Monthly cleanup** / 每月清理
-   - Review statistics for storage usage / 检查存储使用统计
-   - Clean up old or unnecessary conversations / 清理旧的或不必要的对话
+#### 5. Backup Management
+- Automatic backups before destructive operations
+- Manual backup creation with compression
+- Restore instructions and verification
 
-3. **Before major updates** / 重大更新前
-   - Create full backup / 创建完整备份
-   - Run comprehensive health check / 运行综合健康检查
+### File Locations
 
-### Troubleshooting Priority / 故障排除优先级
-1. **Can't scroll in Claude Code** → Use "❌ Delete corrupted conversations"
-2. **Claude Code feels slow** → Check statistics, clean large files
-3. **Error messages** → Run health check with repair option
-4. **Storage space low** → Review and clean old conversations
+#### Claude Code Storage
+- **Windows**: `C:\Users\[username]\.claude\projects\`
+- **macOS/Linux**: `~/.claude/projects/`
+- **Format**: `.jsonl` (JSON Lines)
+- **Structure**: Encoded directory names with UUID-based conversation files
 
-## 🔍 Troubleshooting / 故障排除
+#### Backup Storage
+- **Location**: `./backups/` within tool directory
+- **Format**: Compressed tar.gz archives
+- **Naming**: `backup-YYYY-MM-DD-HH-mm-ss.tar.gz`
 
-### Common Issues / 常见问题
+### Troubleshooting
 
-1. **Permission errors / 权限错误**
-   ```bash
-   # Make sure Claude Code is closed / 确保Claude Code已关闭
-   # Run with appropriate permissions / 使用适当权限运行
-   ```
+#### Common Issues
 
-2. **Cannot find conversations / 找不到对话**
-   - Verify Claude Code installation / 验证Claude Code安装
-   - Check default directory location / 检查默认目录位置
-   - Run as same user as Claude Code / 以与Claude Code相同的用户运行
+1. **Claude Code Scroll Problems**
+   - **Solution**: Use "Delete corrupted conversations" feature
+   - **Cause**: Oversized conversation files (>50KB)
 
-3. **Backup restore failed / 备份恢复失败**
-   - Check backup file integrity / 检查备份文件完整性
-   - Verify target directory permissions / 验证目标目录权限
-   - Use manual extraction method / 使用手动提取方法
+2. **Permission Errors**
+   - **Solution**: Ensure Claude Code is closed before running
+   - **Alternative**: Run with appropriate system permissions
 
-### Getting Help / 获取帮助
-- Check health report for specific issues / 检查健康报告中的具体问题  
-- Review backup files if data seems missing / 如果数据似乎丢失，检查备份文件
-- Use list function to verify conversation restoration / 使用列表功能验证对话恢复
+3. **Cannot Find Conversations**
+   - **Solution**: Verify Claude Code installation and user account
+   - **Check**: Default directory locations and permissions
 
-## 🎯 Success Criteria / 成功标准
+### Safety & Security
 
-**Target**: 5-minute setup, solve 90% of Claude Code conversation cleanup needs
-**目标**: 5分钟设置，解决90%的Claude Code对话清理需求
+- **Data Protection**: Automatic backups before any destructive operation
+- **Non-invasive**: Only operates on conversation files, no system modifications
+- **Verification**: Confirmation prompts prevent accidental operations
+- **Transparency**: Clear reporting of all operations and changes
 
-### Measurement / 衡量标准
-- ✅ **Setup time**: Under 5 minutes from download to first use / 设置时间：从下载到首次使用不到5分钟
-- ✅ **Problem resolution**: Fix scroll issues in 1 click / 问题解决：一键修复滚动问题  
-- ✅ **Safety**: Zero data loss with automatic backups / 安全性：自动备份零数据丢失
-- ✅ **Usability**: Intuitive interface, no documentation required / 可用性：直观界面，无需文档
+### Best Practices
+
+1. **Close Claude Code** before running cleanup operations
+2. **Create manual backups** before major cleanup sessions
+3. **Run health checks** weekly to prevent issues
+4. **Monitor statistics** monthly for storage optimization
+
+### Requirements
+
+- **Node.js**: Version 16.0.0 or higher
+- **Operating System**: Windows, macOS, or Linux
+- **Claude Code**: Any version with standard conversation storage
 
 ---
 
-**Made with ❤️ for Claude Code users worldwide** / **为全球Claude Code用户用心制作**
+## 中文版本
+
+### 概述
+
+Claude 对话管理器（CCM）是一个专业的命令行工具，帮助开发者管理、清理和优化 Claude Code 对话历史记录。解决滚动延迟、损坏的对话文件和存储优化等常见问题。
+
+### 主要功能
+
+- **对话管理**：列出、分析和管理 Claude Code 对话
+- **损坏检测**：自动检测和修复损坏的对话文件
+- **安全清理**：自动备份后删除有问题的对话
+- **存储优化**：分析和优化对话存储使用
+- **健康监控**：全面的对话健康检查和修复
+- **备份系统**：自动和手动备份创建及恢复功能
+- **多语言支持**：支持英文和中文界面
+- **TypeScript**：完整的 TypeScript 支持和类型定义
+
+### 安装方法
+
+#### NPM 安装（推荐）
+
+```bash
+# 全局安装
+npm install -g claude-conversation-manager
+
+# 运行工具
+ccm
+# 或者
+ccm interactive
+```
+
+#### 开发环境设置
+
+```bash
+git clone https://github.com/code-zyp1/claude-conversation-manager.git
+cd claude-conversation-manager
+npm install
+npm run dev
+```
+
+### 使用方法
+
+#### 交互模式
+
+```bash
+ccm interactive
+```
+
+提供完整的交互界面，通过菜单驱动的选项执行所有操作。
+
+#### 命令行界面
+
+```bash
+# 查看所有可用命令
+ccm --help
+
+# 列出所有对话
+ccm list
+
+# 删除损坏的对话
+ccm delete --corrupted
+
+# 运行健康检查并自动修复
+ccm health --fix
+
+# 创建手动备份
+ccm backup
+```
+
+### 核心功能
+
+#### 1. 对话列表
+浏览所有 Claude Code 对话，包含项目路径、创建日期和消息数量等详细信息。损坏的对话会被明确标记。
+
+#### 2. 删除损坏对话
+**主要用途**：通过删除超大的上下文延续消息（>50KB）来修复 Claude Code 滚动问题，这些消息会导致 TUI 渲染问题。
+
+#### 3. 健康检查和修复
+全面扫描所有对话文件，对可恢复的损坏进行自动修复尝试。
+
+#### 4. 统计和分析
+- 对话总数和存储使用情况
+- 项目分布和最大文件识别
+- 性能影响分析
+
+#### 5. 备份管理
+- 破坏性操作前自动备份
+- 压缩的手动备份创建
+- 恢复说明和验证
+
+### 文件位置
+
+#### Claude Code 存储
+- **Windows**: `C:\Users\[username]\.claude\projects\`
+- **macOS/Linux**: `~/.claude/projects/`
+- **格式**: `.jsonl`（JSON Lines）
+- **结构**: 编码的目录名和基于 UUID 的对话文件
+
+#### 备份存储
+- **位置**: 工具目录内的 `./backups/`
+- **格式**: 压缩的 tar.gz 档案
+- **命名**: `backup-YYYY-MM-DD-HH-mm-ss.tar.gz`
+
+### 故障排除
+
+#### 常见问题
+
+1. **Claude Code 滚动问题**
+   - **解决方案**：使用"删除损坏对话"功能
+   - **原因**：超大对话文件（>50KB）
+
+2. **权限错误**
+   - **解决方案**：运行前确保 Claude Code 已关闭
+   - **替代方案**：使用适当的系统权限运行
+
+3. **找不到对话**
+   - **解决方案**：验证 Claude Code 安装和用户账户
+   - **检查**：默认目录位置和权限
+
+### 安全性
+
+- **数据保护**：任何破坏性操作前自动备份
+- **非侵入性**：仅操作对话文件，不修改系统
+- **验证机制**：确认提示防止意外操作
+- **透明度**：清晰报告所有操作和更改
+
+### 最佳实践
+
+1. **关闭 Claude Code** 后再运行清理操作
+2. **创建手动备份** 在主要清理会话之前
+3. **运行健康检查** 每周一次以预防问题
+4. **监控统计** 每月一次进行存储优化
+
+### 系统要求
+
+- **Node.js**: 16.0.0 或更高版本
+- **操作系统**: Windows、macOS 或 Linux
+- **Claude Code**: 任何使用标准对话存储的版本
