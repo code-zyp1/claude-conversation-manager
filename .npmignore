@@ -1,0 +1,29 @@
+# Source files
+src/
+tests/
+docs/
+
+# Development files
+tsconfig.json
+jest.config.js
+.gitignore
+.github/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage directory
+coverage/
+
+# Dependency directories (not needed in published package)
+node_modules/

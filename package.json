@@ -1,12 +1,18 @@
 {
   "name": "claude-conversation-manager",
   "version": "1.0.0",
-  "description": "A CLI tool for managing Claude Code conversation history",
+  "description": "A CLI tool for managing Claude Code conversation history with parsing and i18n support",
   "main": "dist/index.js",
   "bin": {
     "ccm": "dist/cli.js"
   },
+  "files": [
+    "dist/",
+    "README.md",
+    "USAGE.md"
+  ],
   "scripts": {
+    "prepublishOnly": "npm run build",
     "dev": "ts-node src/cli.ts interactive",
     "clean": "ts-node src/cli.ts interactive", 
     "build": "tsc",
@@ -14,9 +20,20 @@
     "test": "jest",
     "type-check": "tsc --noEmit"
   },
-  "keywords": ["claude-code", "conversation", "manager", "cli"],
+  "keywords": ["claude-code", "conversation", "manager", "cli", "typescript", "i18n", "parser"],
   "author": "Claude Code User",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/code-zyp1/claude-conversation-manager.git"
+  },
+  "homepage": "https://github.com/code-zyp1/claude-conversation-manager#readme",
+  "bugs": {
+    "url": "https://github.com/code-zyp1/claude-conversation-manager/issues"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "dependencies": {
     "commander": "^11.1.0",
     "chalk": "^4.1.2",
